@@ -45,9 +45,15 @@ post '/contacts' do
 	@email = params[:email]
 	@message = params[:message]
 
-	f = File.open './public/contacts.txt', 'a'
-	f.write "User with email: #{@email} send message '#{@message}'\n"
-	f.close
-	
-	erb :contacts
+	hh = {  :email => 'Введите почту',
+			:message => 'Введите сообщение'}
+	@error = hh.select {|key,_| params[key] == ""}.values.join(", ")
+
+	if @error != ''
+		#f = File.open './public/contacts.txt', 'a'
+		#f.write "User with email: #{@email} send message '#{@message}'\n"	
+		#f.close
+
+		return erb :contacts
+	end
 end
