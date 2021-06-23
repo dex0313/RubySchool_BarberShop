@@ -14,6 +14,10 @@ get '/visit' do
 	erb :visit
 end
 
+get '/contacts' do
+	erb :contacts
+end
+
 post '/visit' do
 
 	@username = params[:username]
@@ -35,4 +39,15 @@ post '/visit' do
 
 	erb "OK, username is #{@username}, #{@phone}, #{@datetime}, #{@barber}, #{@color}"
 
+end
+
+post '/contacts' do
+	@email = params[:email]
+	@message = params[:message]
+
+	f = File.open './public/contacts.txt', 'a'
+	f.write "User with email: #{@email} send message '#{@message}'\n"
+	f.close
+	
+	erb :contacts
 end
