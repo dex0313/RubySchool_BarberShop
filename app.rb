@@ -8,7 +8,11 @@ def is_barber_exists? db, name
 end
 
 def seed_db db, barbers
-
+	barbers.each do |barber|
+		if !is_barber_exists? db, barber
+			db.execute 'insert into Barbers (name) values (?)', [barber]
+		end 
+	end
 
 end
 
@@ -16,6 +20,11 @@ def get_db
 	db = SQLite3::Database.new 'barbershop.db'
 	db.results_as_hash = true
 	return db
+end
+
+before do
+	db = get_db
+	@barbers = db.execute 'select * from Barbers'
 end
 
 configure do
@@ -34,9 +43,10 @@ configure do
 		"Barbers"
 		(
 			"id" INTEGER PRIMARY KEY AUTOINCREMENT,
-			"name" TEXT,
+			"name" TEXT
 		)'
-	seed_db db, ['Jessie Pinkman','Walter White', 'Gus Fring', 'Mike Ehrmantraut']
+
+	seed_db db, ['Jessie Pinkman', 'Walter White', 'Gus Fring', 'Mike Ehrmantraut']
 end
 
 get '/' do
