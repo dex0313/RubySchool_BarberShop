@@ -58,6 +58,10 @@ get '/about' do
 end
 
 get '/visit' do
+	# db = get_db
+
+	# @results = db.execute 'select name from Barbers '
+	
 	erb :visit
 end
 
@@ -84,7 +88,8 @@ post '/visit' do
 	# хеш
 	hh = { 	:username => 'Введите имя',
 			:phone => 'Введите телефон',
-			:datetime => 'Введите дату и время' }
+			:datetime => 'Введите дату и время' 
+		}
 
 	@error = hh.select {|key,_| params[key] == ""}.values.join(", ")
 
@@ -93,7 +98,7 @@ post '/visit' do
 	end
 
 	db = get_db
-	db.execute 'insert into Users (username, phone,	datestamp, barber,color)
+	db.execute 'insert into Users (username, phone,	datestamp, barber, color)
 		values (?, ?, ?, ? ,?)',
 		[@username, @phone, @datetime, @barber, @color]
 
